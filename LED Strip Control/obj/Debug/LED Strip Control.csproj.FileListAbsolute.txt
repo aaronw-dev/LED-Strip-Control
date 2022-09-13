@@ -1,0 +1,11 @@
+H:\LED Strip Control\LED Strip Control\obj\Debug\LED Strip Control.csproj.AssemblyReference.cache
+H:\LED Strip Control\LED Strip Control\obj\Debug\LED Strip Control.csproj.SuggestedBindingRedirects.cache
+H:\LED Strip Control\LED Strip Control\obj\Debug\LEDPeripheralControl.MainForm.resources
+H:\LED Strip Control\LED Strip Control\obj\Debug\LED_Strip_Control.Properties.Resources.resources
+H:\LED Strip Control\LED Strip Control\obj\Debug\LED Strip Control.csproj.GenerateResource.cache
+H:\LED Strip Control\LED Strip Control\obj\Debug\LED Strip Control.csproj.CoreCompileInputs.cache
+H:\LED Strip Control\LED Strip Control\bin\Debug\LED Strip Control.exe.config
+H:\LED Strip Control\LED Strip Control\bin\Debug\LED Strip Control.exe
+H:\LED Strip Control\LED Strip Control\bin\Debug\LED Strip Control.pdb
+H:\LED Strip Control\LED Strip Control\obj\Debug\LED Strip Control.exe
+H:\LED Strip Control\LED Strip Control\obj\Debug\LED Strip Control.pdb
