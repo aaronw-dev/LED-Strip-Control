@@ -76,7 +76,7 @@ namespace LEDPeripheralControl
             b *= brightness;
 
             Console.WriteLine("RD" + r + ",GN" + g + ",BE" + b + ",");
-            port.WriteLine("RD" + r + ",GN" + g + ",BE" + b + ",");
+            port.Write("RD" + r + ",GN" + g + ",BE" + b + ",");
         }
 
         private void ChangeColor(object sender, EventArgs e)
