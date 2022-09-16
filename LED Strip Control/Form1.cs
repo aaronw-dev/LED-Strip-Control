@@ -3,6 +3,8 @@ using System.IO;
 using System.IO.Ports;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Runtime.InteropServices;
+using System.Text;
 
 namespace LEDPeripheralControl
 {
@@ -27,6 +29,31 @@ namespace LEDPeripheralControl
         }
         #endregion
 
+        #region Window Detection
+        [DllImport("user32.dll")]
+        static extern IntPtr GetForegroundWindow();
+        [DllImport("user32.dll")]
+        static extern int GetWindowText(IntPtr hwnd, StringBuilder ss, int count);
+        private string ActiveWindowTitle()
+        {
+            //Create the variable
+            const int nChar = 256;
+            StringBuilder ss = new StringBuilder(nChar);
+
+            //Run GetForeGroundWindows and get active window informations
+            //assign them into handle pointer variable
+            IntPtr handle = IntPtr.Zero;
+            handle = GetForegroundWindow();
+
+            if (GetWindowText(handle, ss, nChar) > 0) return ss.ToString();
+            else return "";
+        }
+        private void Tmr_Tick(object sender, EventArgs e)
+        {
+
+        }
+        #endregion
+
         SerialPort port = new SerialPort("COM6", 9600);
 
         Color curColor;
@@ -36,22 +63,35 @@ namespace LEDPeripheralControl
             InitializeComponent();
             port.Open();
             curColor = Color.White;
-        }
+            
+            Timer tmr = new Timer();
+            tmr.Interval = 100;
+            tmr.Tick += Tmr_Tick;
+            tmr.Start();
 
+        }
         private void Form1_Load(object sender, EventArgs e)
         {
             // Create the NotifyIcon.
-            this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
+            this.snackbarIcon = new System.Windows.Forms.NotifyIcon(this.components);
         }
 
-        private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
+        private void openTrayIcon(object sender, MouseEventArgs e)
         {
+            snackbarIcon.Visible = false;
+            Show();
             Activate();
+            
         }
-
+        private void quitApp(object sender, EventArgs e)
+        {
+            setColor(Color.Black);
+            Close();
+        }
         private void label1_Click(object sender, EventArgs e)
         {
-            Close();
+            snackbarIcon.Visible = true;
+            Hide();
         }
 
         public void BtnHover(object sender, EventArgs e)
@@ -65,17 +105,20 @@ namespace LEDPeripheralControl
 
         private void apply_Click(object sender, EventArgs e)
         {
-            float r = curColor.R;
-            float g = curColor.G;
-            float b = curColor.B;
+            setColor(curColor);
+        }
+
+        private void setColor(Color color)
+        {
+            float r = color.R;
+            float g = color.G;
+            float b = color.B;
 
 
             float brightness = (float)brightnessBar.Value / 255;
             r *= brightness;
             g *= brightness;
             b *= brightness;
-
-            Console.WriteLine("RD" + r + ",GN" + g + ",BE" + b + ",");
             port.Write("RD" + r + ",GN" + g + ",BE" + b + ",");
         }
 
@@ -84,6 +127,7 @@ namespace LEDPeripheralControl
             ColorDialog dialog = new ColorDialog();
             if(dialog.ShowDialog() == DialogResult.OK)
             {
+                richTextBox1.BackColor = dialog.Color;
                 curColor = dialog.Color;
             }
         }

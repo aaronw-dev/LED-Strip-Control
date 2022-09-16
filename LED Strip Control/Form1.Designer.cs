@@ -30,8 +30,10 @@ namespace LEDPeripheralControl
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
+            this.snackbarIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.apply = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
@@ -39,20 +41,28 @@ namespace LEDPeripheralControl
             this.brightnessBar = new System.Windows.Forms.TrackBar();
             this.label1 = new System.Windows.Forms.Label();
             this.closeButton = new System.Windows.Forms.Label();
+            this.notifyIconMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.quitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.helloToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.brightnessBar)).BeginInit();
+            this.notifyIconMenu.SuspendLayout();
             this.SuspendLayout();
             // 
-            // notifyIcon1
+            // snackbarIcon
             // 
-            this.notifyIcon1.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info;
-            this.notifyIcon1.BalloonTipText = "Test";
-            this.notifyIcon1.Text = "Test";
-            this.notifyIcon1.Visible = true;
-            this.notifyIcon1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseDoubleClick);
+            this.snackbarIcon.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+            this.snackbarIcon.BalloonTipText = "Test";
+            this.snackbarIcon.BalloonTipTitle = "Hello";
+            this.snackbarIcon.ContextMenuStrip = this.notifyIconMenu;
+            this.snackbarIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("snackbarIcon.Icon")));
+            this.snackbarIcon.Text = "LED Strip Control";
+            this.snackbarIcon.Visible = true;
+            this.snackbarIcon.MouseClick += new System.Windows.Forms.MouseEventHandler(this.openTrayIcon);
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.richTextBox1);
             this.groupBox1.Controls.Add(this.button1);
             this.groupBox1.Controls.Add(this.apply);
             this.groupBox1.Controls.Add(this.label3);
@@ -61,16 +71,24 @@ namespace LEDPeripheralControl
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Location = new System.Drawing.Point(8, 10);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(276, 166);
+            this.groupBox1.Size = new System.Drawing.Size(276, 212);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Lighting";
             // 
+            // richTextBox1
+            // 
+            this.richTextBox1.Location = new System.Drawing.Point(113, 77);
+            this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.Size = new System.Drawing.Size(50, 52);
+            this.richTextBox1.TabIndex = 6;
+            this.richTextBox1.Text = "";
+            // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(25, 93);
+            this.button1.Location = new System.Drawing.Point(14, 139);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(234, 38);
+            this.button1.Size = new System.Drawing.Size(248, 38);
             this.button1.TabIndex = 5;
             this.button1.Text = "Select Color";
             this.button1.UseVisualStyleBackColor = true;
@@ -78,9 +96,9 @@ namespace LEDPeripheralControl
             // 
             // apply
             // 
-            this.apply.Location = new System.Drawing.Point(69, 137);
+            this.apply.Location = new System.Drawing.Point(94, 183);
             this.apply.Name = "apply";
-            this.apply.Size = new System.Drawing.Size(75, 23);
+            this.apply.Size = new System.Drawing.Size(89, 23);
             this.apply.TabIndex = 4;
             this.apply.Text = "apply";
             this.apply.UseVisualStyleBackColor = true;
@@ -139,6 +157,27 @@ namespace LEDPeripheralControl
             this.closeButton.MouseEnter += new System.EventHandler(this.BtnHover);
             this.closeButton.MouseLeave += new System.EventHandler(this.BtnLeave);
             // 
+            // notifyIconMenu
+            // 
+            this.notifyIconMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.quitToolStripMenuItem,
+            this.helloToolStripMenuItem});
+            this.notifyIconMenu.Name = "notifyIconMenu";
+            this.notifyIconMenu.Size = new System.Drawing.Size(181, 70);
+            // 
+            // quitToolStripMenuItem
+            // 
+            this.quitToolStripMenuItem.Name = "quitToolStripMenuItem";
+            this.quitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.quitToolStripMenuItem.Text = "Quit";
+            this.quitToolStripMenuItem.Click += new System.EventHandler(this.quitApp);
+            // 
+            // helloToolStripMenuItem
+            // 
+            this.helloToolStripMenuItem.Name = "helloToolStripMenuItem";
+            this.helloToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.helloToolStripMenuItem.Text = "Hello!";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -148,6 +187,7 @@ namespace LEDPeripheralControl
             this.Controls.Add(this.closeButton);
             this.Controls.Add(this.groupBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";
             this.Text = "LED Strip Control";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -155,6 +195,7 @@ namespace LEDPeripheralControl
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.brightnessBar)).EndInit();
+            this.notifyIconMenu.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -162,7 +203,7 @@ namespace LEDPeripheralControl
 
         #endregion
 
-        private NotifyIcon notifyIcon1;
+        private NotifyIcon snackbarIcon;
         private GroupBox groupBox1;
         private Label closeButton;
         private Label label1;
@@ -171,5 +212,9 @@ namespace LEDPeripheralControl
         private Label label2;
         private Button apply;
         private Button button1;
+        private RichTextBox richTextBox1;
+        private ContextMenuStrip notifyIconMenu;
+        private ToolStripMenuItem quitToolStripMenuItem;
+        private ToolStripMenuItem helloToolStripMenuItem;
     }
 }
